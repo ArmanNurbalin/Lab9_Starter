@@ -87,6 +87,14 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "bd8adef40dd84117992af98721ec8769"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -95,13 +103,85 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        if (isNaN(firstNum)) {
+          throw new Error('Invalid Input: Use valid number');
+        }
+        if (isNaN(secondNum)) {
+          throw new Error('Invalid Input: Use valid number');
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (err) {
+        alert('Error when trying calculating');
+        console.error(err.message);
+      } finally {
+        console.log('Calculation was attempted');
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const buttonText = btn.textContent
+        switch (buttonText) {
+          case 'Console Log':
+            console.log('Console Log Demo');
+            break;
+          case 'Console Error':
+            console.error('Console Error Demo');
+            break;
+          case 'Console Count':
+            console.count('Count Button');
+            break;
+          case 'Console Warn':
+            console.warn('Console Warn Button');
+            break;
+          case 'Console Assert':
+            const number = 2;
+            console.assert(number === 3, {number, errorMsg: 'The number does not equal 3'});
+            break;
+          case 'Console Clear':
+            console.clear();
+            break;
+          case 'Console Dir':
+            console.dir(btn);
+            break;
+          case 'Console dirxml':
+            console.dirxml(btn);
+            break;
+          case 'Console Group Start':
+            console.group('console.group');
+            break;
+          case 'Console Group End':
+            console.groupEnd();
+            break;
+          case 'Console Table':
+            console.table([
+              {name:'Software Engineering', num: 110},
+              {name:'Programming Languages', num: 130},
+              {name:'Advanced Software Engineering', num: 112}
+            ]);
+            break;
+          case 'Start Timer':
+            console.time('Timer Button');
+            break;
+          case 'End Timer':
+            console.timeEnd('Timer Button');
+            break;
+          case 'Console Trace':
+            console.trace('console.trace')
+            break;
+          case 'Trigger a Global Error': 
+            console.log('An error has occured')
+            throw new Error('Global Error')
+            break;
+        }
+      });
+    });
+    
   </script>
 </body>
 
